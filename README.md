@@ -23,7 +23,7 @@ The purpose of this project is to:
 
 ## API Used
 
-This project uses the **OMDb API (Open Movie Database API)**.
+This project uses the **OMDb API (http://www.omdbapi.com/?i=tt3896198&apikey=fb6234a5)**.
 
 * Provides movie title, poster, and year
 * Supports search functionality
