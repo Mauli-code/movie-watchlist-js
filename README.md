@@ -1,4 +1,4 @@
-# Movie Watchlist (JavaScript)
+# Movie Watchlist 
 
 A simple web application where users can search for movies and save their favorites to a watchlist.
 
