@@ -8,6 +8,7 @@ const searchBtn = document.getElementById('searchBtn');
 const resultsDiv = document.getElementById('movieResultsContainer');
 const watchlistDiv = document.getElementById('watchlistContainer');
 const watchlistCountSpan = document.getElementById('watchlistCount');
+const recommendedDiv = document.getElementById('recommendedRow');
 
 // My watchlist array
 let myWatchlist = [];
@@ -182,7 +183,95 @@ function showResults(movies) {
     }
 }
 
-// Search movies from API
+// Show recommended movies
+function showRecommended() {
+    const recommendedMovies = [
+        {
+            Title: 'Inception',
+            Year: '2010',
+            imdbID: 'tt1375666',
+            Poster: 'https://via.placeholder.com/300x450?text=Inception'
+        },
+        {
+            Title: 'The Shawshank Redemption',
+            Year: '1994',
+            imdbID: 'tt0111161',
+            Poster: 'https://via.placeholder.com/300x450?text=Shawshank'
+        },
+        {
+            Title: 'The Dark Knight',
+            Year: '2008',
+            imdbID: 'tt0468569',
+            Poster: 'https://via.placeholder.com/300x450?text=DarkKnight'
+        },
+        {
+            Title: 'Pulp Fiction',
+            Year: '1994',
+            imdbID: 'tt0110912',
+            Poster: 'https://via.placeholder.com/300x450?text=PulpFiction'
+        },
+        {
+            Title: 'Forrest Gump',
+            Year: '1994',
+            imdbID: 'tt0109830',
+            Poster: 'https://via.placeholder.com/300x450?text=ForrestGump'
+        }
+    ];
+    
+    // Clear previous content
+    recommendedDiv.innerHTML = '';
+    
+    // Show each movie
+    for (let i = 0; i < recommendedMovies.length; i++) {
+        let movie = recommendedMovies[i];
+        
+        // Create card
+        let movieDiv = document.createElement('div');
+        movieDiv.className = 'movie-card';
+        
+        // Poster image
+        let img = document.createElement('img');
+        if (movie.Poster && movie.Poster !== 'N/A') {
+            img.src = movie.Poster;
+        } else {
+            img.src = 'https://via.placeholder.com/300x450?text=No+Poster';
+        }
+        
+        // Title
+        let title = document.createElement('h3');
+        title.innerHTML = movie.Title;
+        
+        // Year
+        let year = document.createElement('p');
+        year.innerHTML = movie.Year;
+        
+        // Add button
+        let addBtn = document.createElement('button');
+        
+        // Check if already in watchlist
+        if (alreadyInList(movie.imdbID)) {
+            addBtn.innerHTML = 'In Watchlist';
+            addBtn.disabled = true;
+        } else {
+            addBtn.innerHTML = 'Add to Watchlist';
+            addBtn.onclick = function() {
+                addMovie(movie.imdbID, movie.Title, movie.Year, movie.Poster);
+                // Update button after adding
+                addBtn.innerHTML = 'In Watchlist';
+                addBtn.disabled = true;
+            };
+        }
+        
+        // Add to page
+        movieDiv.appendChild(img);
+        movieDiv.appendChild(title);
+        movieDiv.appendChild(year);
+        movieDiv.appendChild(addBtn);
+        recommendedDiv.appendChild(movieDiv);
+    }
+}
+
+
 function searchMovies() {
     // Get search text
     let searchText = searchInput.value;
@@ -229,3 +318,4 @@ searchInput.onkeypress = function(event) {
 
 // Load watchlist when page loads
 loadWatchlist();
+showRecommended();

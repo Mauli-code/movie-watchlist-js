@@ -3,27 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Movie Watchlist</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav id="navbar">
+    <h1>Watch</h1>
     <div class="nav-left">
         <a class="nav-link active">Home</a>
         <a class="nav-link">Movies</a>
         <a class="nav-link">Watchlist</a>
     </div>
-<h1>Watch</h1>
+</nav>
+
 <main class="content">
+    <div class="search-section">
+        <input type="text" id="searchInput" placeholder="Search movies...">
+        <button id="searchBtn">Search</button>
+    </div>
 
-<input type="text" id="searchInput" placeholder="Search movies...">
-<button id="searchBtn">Search</button>
-<div id="movieResultsContainer"></div>
-<div id="watchlistContainer"></div>
-<div id="watchlistCount"></div>
-<div id="recommendedRow"></div>
+    <section>
+        <h2>Search Results</h2>
+        <div id="movieResultsContainer"></div>
+    </section>
 
+    <section>
+        <h2>My Watchlist <span id="watchlistCount"></span></h2>
+        <div id="watchlistContainer"></div>
+    </section>
+
+    <section>
+        <h2>Recommended</h2>
+        <div id="recommendedRow"></div>
+    </section>
 </main>
 
 <div id="toast" class="toast">Added</div>
