@@ -3,9 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script></script>
+
+<nav id="navbar">
+    <div class="nav-left">
+        <a class="nav-link active">Home</a>
+        <a class="nav-link">Movies</a>
+        <a class="nav-link">Watchlist</a>
+    </div>
+<h1>Watch</h1>
+<main class="content">
+
+<input type="text" id="searchInput" placeholder="Search movies...">
+<button id="searchBtn">Search</button>
+<div id="movieResultsContainer"></div>
+<div id="watchlistContainer"></div>
+<div id="watchlistCount"></div>
+<div id="recommendedRow"></div>
+
+</main>
+
+<div id="toast" class="toast">Added</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
