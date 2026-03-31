@@ -190,31 +190,25 @@ function showRecommended() {
             Title: 'Inception',
             Year: '2010',
             imdbID: 'tt1375666',
-            Poster: 'https://via.placeholder.com/300x450?text=Inception'
+            Poster: 'https://m.media-amazon.com/images/I/91G0gTLz6GL._AC_UF1000,1000_QL80_.jpg'
         },
         {
             Title: 'The Shawshank Redemption',
             Year: '1994',
             imdbID: 'tt0111161',
-            Poster: 'https://via.placeholder.com/300x450?text=Shawshank'
+            Poster: 'https://images.moviesanywhere.com/53dd4d73ac5d1dacd2e577550023dab5/429f797f-c4ca-4d27-8fc5-ca552a5d86e7.jpg'
         },
         {
             Title: 'The Dark Knight',
             Year: '2008',
             imdbID: 'tt0468569',
-            Poster: 'https://via.placeholder.com/300x450?text=DarkKnight'
-        },
-        {
-            Title: 'Pulp Fiction',
-            Year: '1994',
-            imdbID: 'tt0110912',
-            Poster: 'https://via.placeholder.com/300x450?text=PulpFiction'
+            Poster: 'https://m.media-amazon.com/images/M/MV5BMDQ5MWU2YWUtNTQ4OC00Njk5LWI0NzctMjM4OGZiNmZmNGViXkEyXkFqcGc@._V1_.jpg'
         },
         {
             Title: 'Forrest Gump',
             Year: '1994',
             imdbID: 'tt0109830',
-            Poster: 'https://via.placeholder.com/300x450?text=ForrestGump'
+            Poster: 'https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg'
         }
     ];
     
