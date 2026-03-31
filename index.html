@@ -3,45 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Watchlist</title>
+    <title>CineVault - Movie Watchlist</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Navigation Bar -->
 <nav id="navbar">
-    <h1>Watch</h1>
-    <div class="nav-left">
-        <a class="nav-link active">Home</a>
-        <a class="nav-link">Movies</a>
-        <a class="nav-link">Watchlist</a>
+    <div class="nav-container">
+        <h1 class="logo">CineVault</h1>
+        <button id="wlNavBtn" class="nav-wl-btn" title="Open Watchlist">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span id="navWlCount" class="wl-badge">0</span>
+        </button>
     </div>
 </nav>
 
-<main class="content">
-    <div class="search-section">
-        <input type="text" id="searchInput" placeholder="Search movies...">
-        <button id="searchBtn">Search</button>
+<!-- Mobile Backdrop -->
+<div id="mobBackdrop" class="hidden"></div>
+
+<!-- Main Content -->
+<main class="container">
+    <!-- Search Section -->
+    <div class="search-wrap">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for a movie..." />
+            <button id="clearBtn" class="clear-btn hidden" title="Clear search">✕</button>
+        </div>
+        
+        <!-- Results Bar with Sort -->
+        <div id="resultsBar" class="results-bar hidden">
+            <span id="resultsCount"></span>
+            <select id="sortSelect" class="sort-select">
+                <option value="default">Default</option>
+                <option value="year-desc">Newest First</option>
+                <option value="year-asc">Oldest First</option>
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+            </select>
+        </div>
     </div>
 
-    <section>
-        <h2>Search Results</h2>
-        <div id="movieResultsContainer"></div>
-    </section>
+    <!-- Loader -->
+    <div id="loader" class="loader hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
 
-    <section>
-        <h2>My Watchlist <span id="watchlistCount"></span></h2>
-        <div id="watchlistContainer"></div>
-    </section>
+    <!-- Error Box -->
+    <div id="errorBox" class="error-box hidden">
+        <p id="errorText"></p>
+    </div>
 
-    <section>
-        <h2>Recommended</h2>
-        <div id="recommendedRow"></div>
-    </section>
+    <!-- Landing Wrap (Welcome content) -->
+    <div id="landingWrap" class="landing-wrap">
+        <div class="landing-content">
+            <h2>Welcome to CineVault</h2>
+            <p>Search for movies and build your personal watchlist</p>
+        </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="no-results hidden">
+        <p>No movies found. Try searching for something else.</p>
+    </div>
+
+    <!-- Movies Grid -->
+    <div id="moviesGrid" class="movies-grid"></div>
 </main>
 
-<div id="toast" class="toast">Added</div>
+<!-- Watchlist Sidebar -->
+<aside id="wlSidebar" class="wl-sidebar">
+    <div class="wl-header">
+        <h2>My Watchlist <span id="wlCount" class="count">0</span></h2>
+        <button class="close-btn" onclick="document.getElementById('wlNavBtn').click()" title="Close">✕</button>
+    </div>
+    
+    <div id="wlEmptyState" class="wl-empty-state">
+        <p>🎬</p>
+        <p>No movies in your watchlist yet</p>
+    </div>
+
+    <ul id="wlList" class="wl-list"></ul>
+
+    <div id="wlActions" class="wl-actions hidden">
+        <button id="randomBtn" class="btn btn-secondary">🎲 Random Pick</button>
+        <button id="clearAllBtn" class="btn btn-danger">Clear All</button>
+    </div>
+</aside>
+
+<!-- Detail Modal -->
+<div id="detailOverlay" class="modal-overlay hidden">
+    <div class="modal modal-lg">
+        <!-- Skeleton Loader -->
+        <div id="detailSkeleton" class="detail-skeleton">
+            <div class="skeleton skeleton-poster"></div>
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+        </div>
+
+        <!-- Detail Body -->
+        <div id="detailBody" class="detail-body hidden">
+            <button id="detailCloseBtn" class="modal-close" title="Close">✕</button>
+            
+            <div class="detail-header">
+                <img id="dPoster" class="detail-poster" alt="Movie Poster" />
+                <div class="detail-info">
+                    <h2 id="dTitle"></h2>
+                    <div id="dChips" class="chips"></div>
+                </div>
+            </div>
+
+            <div id="dScoreRow" class="score-row"></div>
+
+            <div class="detail-section">
+                <h3>Genres</h3>
+                <div id="dGenres" class="genres"></div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Plot</h3>
+                <p id="dPlot" class="plot"></p>
+            </div>
+
+            <div id="dCrew" class="crew-section"></div>
+
+            <div class="detail-actions">
+                <button id="detailWlBtn" class="btn btn-primary">Add to Watchlist</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Random Movie Modal -->
+<div id="randomOverlay" class="modal-overlay hidden">
+    <div class="modal modal-sm">
+        <button id="randomCloseBtn" class="modal-close" title="Close">✕</button>
+        <div class="random-content">
+            <img id="rPoster" class="random-poster" alt="Movie Poster" />
+            <h2 id="rTitle"></h2>
+            <p id="rYear" class="year"></p>
+            <div class="random-actions">
+                <button id="randomAgainBtn" class="btn btn-secondary">Try Another</button>
+                <button class="btn btn-primary" onclick="document.getElementById('detailOverlay').classList.contains('hidden') || document.getElementById('randomCloseBtn').click()">Details</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
