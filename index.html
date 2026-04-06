@@ -3,133 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MovieWatch | Shrungar's Student Project</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Movie App - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
 <nav id="navbar">
     <div class="nav-brand">
-        <h1>MovieWatch</h1>
-        <span class="student-name">by Shrungar</span>
+        <h1>Movie App</h1>
     </div>
-    <div class="nav-left">
-        <a class="nav-link active">Home</a>
-        <a class="nav-link">Movies</a>
-        <a class="nav-link" id="wlNavBtn">Watchlist <span id="navWlCount">0</span></a>
+    <div class="nav-links-group">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="movies.html" class="nav-link">Movies</a>
+        <a href="coming.html" class="nav-link">Coming Soon</a>
+        <a href="watchlist.html" class="nav-link">Watchlist <span id="navWlCount">0</span></a>
+        <button id="themeToggle" class="theme-toggle">Dark</button>
     </div>
 </nav>
 
-<main class="content">
-    <div class="search-section">
-        <input type="text" id="searchInput" placeholder="Search movies...">
-        <button id="searchBtn">Search</button>
-        <button id="clearBtn" class="hidden">✕ Clear</button>
-    </div>
-
-    <div id="errorBox" class="error-message hidden">
-        <span id="errorText"></span>
-    </div>
-
-    <div id="loader" class="loading-spinner hidden">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
-
-    <div id="landingWrap" class="landing-section">
-        <h2 id="popularTitle">Popular Movies</h2>
-    </div>
-
-    <div id="resultsBar" class="results-bar hidden">
-        <div class="results-header">
-            <h2 id="resultsCount"></h2>
-            <select id="sortSelect">
-                <option value="default">Default</option>
-                <option value="year-desc">Year (Newest)</option>
-                <option value="year-asc">Year (Oldest)</option>
-                <option value="az">A-Z</option>
-                <option value="za">Z-A</option>
-            </select>
+<main id="appRoot">
+    <div id="homePage" class="page">
+        <div class="search-card">
+            <div class="search-flex">
+                <input type="text" id="searchInput" placeholder="Search movies...">
+                <button id="searchBtn" class="btn-primary">Search</button>
+                <button id="surpriseBtn" class="btn-primary" type="button">Surprise Me</button>
+                <button id="clearBtn" class="hidden">Clear</button>
+            </div>
+            <div id="surpriseResult" class="surprise-result hidden"></div>
         </div>
-    </div>
 
-    <div id="noResults" class="no-results hidden">
-        <p>No movies found. Try a different search.</p>
-    </div>
+        <div id="errorBox" class="error-message hidden"></div>
 
-    <div id="moviesGrid" class="movies-grid"></div>
+        <div id="landingWrap">
+            <h2>Popular Movies</h2>
+        </div>
+
+        <div id="resultsBar" class="hidden">
+            <div class="results-header">
+                <h3 id="resultsCount"></h3>
+                <div class="controls-row">
+                    <select id="filterSelect">
+                        <option value="all">All years</option>
+                        <option value="pre1990">Before 1990</option>
+                        <option value="1990-2009">1990-2009</option>
+                        <option value="2010-plus">2010+</option>
+                    </select>
+                    <select id="sortSelect">
+                        <option value="default">Default</option>
+                        <option value="year-desc">Newest first</option>
+                        <option value="year-asc">Oldest first</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="noResults" class="hidden">No results</div>
+        <div id="moviesGrid" class="movies-grid"></div>
+        <div id="loader" class="loader hidden">Loading...</div>
+    </div>
 </main>
 
-<!-- Watchlist Sidebar -->
-<div id="wlSidebar" class="wl-sidebar">
-    <div class="wl-header">
-        <h2>My Watchlist</h2>
-        <button class="wl-close" id="wlCloseBtn">✕</button>
-    </div>
-    <div id="wlEmptyState" class="wl-empty">
-        <p>No movies in your watchlist yet</p>
-    </div>
-    <ul id="wlList" class="wl-list"></ul>
-    <div id="wlActions" class="wl-actions hidden">
-        <p class="wl-count">Total: <strong id="wlCount">0</strong></p>
-        <button id="randomBtn" class="btn-random">Pick Random</button>
-        <button id="clearAllBtn" class="btn-clear-all">Clear All</button>
-    </div>
-</div>
-
-<div id="mobBackdrop" class="mob-backdrop hidden"></div>
-
-<!-- Detail Modal -->
 <div id="detailOverlay" class="detail-modal hidden">
-    <div class="detail-content">
-        <div id="detailSkeleton" class="detail-skeleton">
-            <div class="skeleton-poster"></div>
-            <div class="skeleton-text"></div>
-        </div>
-        <div id="detailBody" class="detail-body hidden">
-            <img id="dPoster" class="detail-poster" src="" alt="">
-            <div class="detail-info">
-                <h2 id="dTitle"></h2>
-                <div id="dChips" class="chips"></div>
-                <div id="dScoreRow" class="scores"></div>
-                <div id="dGenres" class="genres"></div>
-                <p id="dPlot" class="plot"></p>
-                <div id="dCrew" class="crew"></div>
-                <button id="detailWlBtn" class="detail-wl-btn">Add to Watchlist</button>
-            </div>
-        </div>
-        <button id="detailCloseBtn" class="modal-close">✕</button>
-    </div>
+    <div id="detailSkeleton" class="loading-spinner"></div>
+    <div id="detailBody" class="detail-content hidden"></div>
 </div>
 
-<!-- Random Picker Modal -->
-<div id="randomOverlay" class="random-modal hidden">
-    <div class="random-content">
-        <div class="random-body">
-            <img id="rPoster" src="" alt="" class="random-poster">
-            <div class="random-info">
-                <h2 id="rTitle"></h2>
-                <p id="rYear"></p>
-            </div>
-        </div>
-        <div class="random-actions">
-            <button id="randomAgainBtn" class="btn-again">Pick Again</button>
-            <button id="randomCloseBtn" class="btn-close-random">Close</button>
-        </div>
-    </div>
-</div>
+<div id="toast" class="toast hidden"></div>
 
-<footer class="project-footer">
-    <div class="footer-content">
-        <p>&copy; 2024 MovieWatch Project</p>
-        <p>Submitted by: <strong>Shrungar</strong></p>
-        <p><em>Student Web Development Project</em></p>
-    </div>
-</footer>
-
-<div id="toast" class="toast">Added</div>
-
-<script src="script.js"></script>
-
+<script src="js/common.js"></script>
+<script src="js/movie-card.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>
