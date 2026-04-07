@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App - Movies</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/movies.css">
+</head>
+<body>
+
+<nav id="navbar">
+    <div class="nav-brand">
+        <h1>Movie App</h1>
+    </div>
+    <div class="nav-links-group">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="movies.html" class="nav-link active">Movies</a>
+        <a href="coming.html" class="nav-link">Coming Soon</a>
+        <a href="watchlist.html" class="nav-link">Watchlist <span id="navWlCount">0</span></a>
+        <button id="themeToggle" class="theme-toggle">Light</button>
+    </div>
+</nav>
+
+<main id="appRoot">
+    <div id="moviesPage" class="page">
+        <div class="search-card">
+            <div class="search-flex">
+                <input type="text" id="moviesSearchInput" placeholder="Search movies...">
+                <button id="moviesSearchBtn" class="btn-primary">Search</button>
+                <button id="moviesSurpriseBtn" class="btn-primary" type="button">Surprise Me</button>
+                <button id="moviesClearBtn" class="hidden">Clear</button>
+            </div>
+            <div id="moviesSurpriseResult" class="surprise-result hidden"></div>
+        </div>
+        <div id="errorBox" class="error-message hidden"></div>
+        <div id="moviesResultsBar" class="hidden">
+            <div class="results-header">
+                <h3 id="moviesCount"></h3>
+                <div class="controls-row">
+                    <select id="moviesFilterSelect">
+                        <option value="all">All years</option>
+                        <option value="pre1990">Before 2000</option>
+                        <option value="1990-2009">2000-2020</option>
+                        <option value="2010-plus">2020+</option>
+                    </select>
+                    <select id="moviesSortSelect">
+                        <option value="default">Default</option>
+                        <option value="year-desc">Year New</option>
+                        <option value="year-asc">Year Old</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="moviesGridContainer" class="movies-grid"></div>
+        <div id="moviesNoResults" class="hidden">No results</div>
+        <div id="loader" class="loader hidden">Loading...</div>
+    </div>
+</main>
+
+<div id="detailOverlay" class="detail-modal hidden">
+    <div id="detailSkeleton" class="loading-spinner"></div>
+    <div id="detailBody" class="detail-content hidden"></div>
+</div>
+
+<div id="randomOverlay" class="random-modal hidden"><div class="random-content"><div id="randomInner"></div><div><button id="randomAgainBtn">Pick again</button><button id="randomCloseBtn">Close</button></div></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/common.js"></script>
+<script src="js/movie-card.js"></script>
+<script src="js/movies.js"></script>
+</body>
+</html>
