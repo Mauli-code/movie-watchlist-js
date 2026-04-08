@@ -1,0 +1,118 @@
+body.dark-mode {
+  background: #24211d;
+  color: #ece7dd;
+}
+
+body.dark-mode #navbar,
+body.dark-mode .page {
+  background: #312c27;
+  border-color: #4b433b;
+  box-shadow: none;
+}
+
+body.dark-mode .nav-link {
+  color: #eee6d8;
+}
+
+body.dark-mode .nav-link::after {
+  background: #eee6d8;
+}
+
+body.dark-mode .theme-toggle,
+body.dark-mode .btn-primary,
+body.dark-mode #clearBtn,
+body.dark-mode .btn-sm,
+body.dark-mode .btn-card-save,
+body.dark-mode .btn-details,
+body.dark-mode .card-bookmark-btn {
+  background: #4f473f;
+  border-color: #6a6158;
+  color: #f1ebe2;
+}
+
+body.dark-mode .theme-toggle:hover,
+body.dark-mode .btn-primary:hover,
+body.dark-mode #clearBtn:hover,
+body.dark-mode .btn-sm:hover,
+body.dark-mode .btn-card-save:hover,
+body.dark-mode .btn-details:hover,
+body.dark-mode .card-bookmark-btn:hover {
+  background: #60564d;
+}
+
+body.dark-mode .btn-like.active,
+body.dark-mode .btn-favorite.active {
+  background: #8c7e6e;
+  color: #fff7e8;
+  border-color: #a89684;
+}
+
+body.dark-mode #searchInput,
+body.dark-mode #filterSelect,
+body.dark-mode #sortSelect {
+  background: #26221e;
+  border-color: #5d544b;
+  color: #f1ebe2;
+}
+
+body.dark-mode .results-header,
+body.dark-mode .movie-card,
+body.dark-mode .card-poster,
+body.dark-mode .surprise-result,
+body.dark-mode .loader,
+body.dark-mode .error-message,
+body.dark-mode .toast,
+body.dark-mode .loading-spinner,
+body.dark-mode .detail-content {
+  border-color: #5d544b;
+}
+
+body.dark-mode .movie-card:hover {
+  background: #3a342d;
+}
+
+body.dark-mode .movie-card {
+  border-color: #5d544b;
+  background: #2c2722;
+}
+
+body.dark-mode .card-poster-wrap {
+  border-right-color: #5d544b;
+}
+
+body.dark-mode .card-title {
+  color: #f3ede3;
+}
+
+body.dark-mode .card-year {
+  border-bottom-color: #5d544b;
+}
+
+body.dark-mode .card-actions {
+  border-top-color: #5d544b;
+}
+
+body.dark-mode .card-actions > button {
+  background: #26211d;
+  border-right-color: #5d544b;
+}
+
+body.dark-mode .card-year,
+body.dark-mode #noResults {
+  color: #d5cdc1;
+}
+
+body.dark-mode .surprise-result,
+body.dark-mode .loader,
+body.dark-mode .error-message,
+body.dark-mode .toast,
+body.dark-mode .loading-spinner,
+body.dark-mode .movie-details,
+body.dark-mode .detail-content {
+  background: #3a342d;
+  color: #eee7dd;
+}
+
+body.dark-mode .movie-details {
+  border-left-color: #6a6158;
+}

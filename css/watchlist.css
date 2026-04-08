@@ -140,6 +140,36 @@ body.dark-mode .card-year {
   color: #d5cdc1;
 }
 
+body.dark-mode .library-box {
+  background: #3a342d;
+  border-color: #5d544b;
+}
+
+body.dark-mode .mini-card {
+  background: #2f2a25;
+  border-color: #544c44;
+}
+
+body.dark-mode .mini-meta p,
+body.dark-mode .small-empty {
+  color: #d6cec2;
+}
+
+body.dark-mode .no-poster {
+  background: #4a433b;
+  color: #f0e8dc;
+}
+
+body.dark-mode .mini-remove-btn {
+  background: #4f473f;
+  color: #f1ebe2;
+  border-color: #6a6158;
+}
+
+body.dark-mode .mini-remove-btn:hover {
+  background: #60564d;
+}
+
 .page {
   max-width: 960px;
   margin: 14px auto 24px;
@@ -251,6 +281,88 @@ body.dark-mode .card-year {
   margin-top: 12px;
 }
 
+.library-boxes-wrap {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.library-box {
+  border: 1px solid #d6cfc2;
+  background: #f6f1e8;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.library-box h3 {
+  margin: 0 0 10px;
+}
+
+.mini-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.mini-card {
+  border: 1px solid #cbc3b6;
+  border-radius: 4px;
+  background: #fffbf3;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  align-items: center;
+}
+
+.mini-poster {
+  width: 50px;
+  min-width: 50px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid #c9c1b5;
+}
+
+.no-poster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  background: #ded6ca;
+  color: #4a453f;
+}
+
+.mini-meta h4 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+}
+
+.mini-meta p {
+  margin: 0;
+  color: #58524a;
+  font-size: 0.88rem;
+}
+
+.small-empty {
+  margin: 2px 0 0;
+  color: #5d564f;
+}
+
+.mini-remove-btn {
+  margin-left: auto;
+  border: 1px solid #a39d93;
+  background: #d7d1c6;
+  color: #1f1f1f;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.mini-remove-btn:hover {
+  background: #bdb6ab;
+}
+
 .error-message,
 .toast {
   margin-top: 10px;
@@ -286,6 +398,10 @@ body.dark-mode .card-year {
   .page {
     margin-left: 12px;
     margin-right: 12px;
+  }
+
+  .library-boxes-wrap {
+    grid-template-columns: 1fr;
   }
 
   .movie-card {
@@ -335,5 +451,9 @@ body.dark-mode .card-year {
   #randomAgainBtn,
   #randomCloseBtn {
     width: 100%;
+  }
+
+  .mini-remove-btn {
+    width: auto;
   }
 }

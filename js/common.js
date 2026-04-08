@@ -3,17 +3,17 @@ const WATCHLIST_STORAGE_KEY = "movieapp_list";
 const THEME_STORAGE_KEY = "movieapp_theme";
 
 let watchlist = [];    // array to store movies user added
-var isDark = false;    // TODO: convert all var to let/const
+let isDarkThemeEnabled = false;
 
 // load watchlist from localStorage when page starts
 function loadList() {
-  let data = localStorage.getItem(WATCHLIST_STORAGE_KEY)
-  if (data) {
+  const storedWatchlistData = localStorage.getItem(WATCHLIST_STORAGE_KEY)
+  if (storedWatchlistData) {
     try {
-      watchlist = JSON.parse(data);
+      watchlist = JSON.parse(storedWatchlistData);
       console.log("Loaded watchlist:", watchlist)
-    } catch (e) {
-      console.log("Error loading watchlist:", e)
+    } catch (error) {
+      console.log("Error loading watchlist:", error)
       watchlist = [];
     }
   }
@@ -55,55 +55,55 @@ function updateCount() {
 
 // set theme to light or dark
 function setTheme(isDarkMode) {
-  isDark = isDarkMode
-  if (isDark) {
+  isDarkThemeEnabled = isDarkMode
+  if (isDarkThemeEnabled) {
     document.body.classList.add("dark-mode")
   } else {
     document.body.classList.remove("dark-mode")
   }
 
-  const btn = document.getElementById("themeToggle");
-  if (btn) {
-    btn.innerText = isDark ? "Light" : "Dark"
+  const themeToggleButton = document.getElementById("themeToggle");
+  if (themeToggleButton) {
+    themeToggleButton.innerText = isDarkThemeEnabled ? "Light" : "Dark"
   }
-  localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light")
+  localStorage.setItem(THEME_STORAGE_KEY, isDarkThemeEnabled ? "dark" : "light")
 }
 
 // switch between dark and light
 function toggleTheme() {
-  setTheme(!isDark)
-  console.log("Theme toggled:", isDark ? "dark" : "light")
+  setTheme(!isDarkThemeEnabled)
+  console.log("Theme toggled:", isDarkThemeEnabled ? "dark" : "light")
 }
 
 // set up theme when page loads
 function initTheme() {
-  const saved = localStorage.getItem(THEME_STORAGE_KEY)
-  let darkMode = saved === "dark"
-  setTheme(darkMode)
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+  const shouldUseDarkMode = savedTheme === "dark"
+  setTheme(shouldUseDarkMode)
 
-  const btn = document.getElementById("themeToggle");
-  if (btn) {
-    btn.addEventListener("click", toggleTheme);
+  const themeToggleButton = document.getElementById("themeToggle");
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener("click", toggleTheme);
   }
 }
 
 // show toast notification at bottom right
 function showMsg(msg) {
-  var toast = document.getElementById("toast");  
-  if (toast) {
-    toast.innerText = msg;
-    toast.classList.remove("hidden");
+  const toastElement = document.getElementById("toast");
+  if (toastElement) {
+    toastElement.innerText = msg;
+    toastElement.classList.remove("hidden");
     setTimeout(() => {
-      toast.classList.add("hidden")
+      toastElement.classList.add("hidden")
     }, 2000);
   }
 }
 
 function escape(str) {
   if (typeof str !== "string") return "";
-  let div = document.createElement("div");
-  div.textContent = str
-  return div.innerHTML
+  const tempContainer = document.createElement("div");
+  tempContainer.textContent = str
+  return tempContainer.innerHTML
 }
 
 // run when page loads

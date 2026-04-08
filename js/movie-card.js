@@ -1,10 +1,49 @@
 const MOVIE_API_KEY = "373c7a1f";
 const MOVIE_API_URL = "https://www.omdbapi.com/";
+const MOVIE_LIKES_STORAGE_KEY = "movieapp_likes";
+const MOVIE_FAVORITES_STORAGE_KEY = "movieapp_favorites";
+
+function loadIdSet(storageKey) {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveIdSet(storageKey, ids) {
+  localStorage.setItem(storageKey, JSON.stringify(Array.from(ids)));
+}
+
+function isMovieLiked(movieId) {
+  return loadIdSet(MOVIE_LIKES_STORAGE_KEY).has(movieId);
+}
+
+function isMovieFavorite(movieId) {
+  return loadIdSet(MOVIE_FAVORITES_STORAGE_KEY).has(movieId);
+}
+
+function toggleMovieReaction(storageKey, movieId) {
+  const ids = loadIdSet(storageKey);
+  if (ids.has(movieId)) {
+    ids.delete(movieId);
+    saveIdSet(storageKey, ids);
+    return false;
+  }
+
+  ids.add(movieId);
+  saveIdSet(storageKey, ids);
+  return true;
+}
 
 function createMovieCard(movie, options = {}) {
   const showDetails = options.showDetails !== false;
   const card = document.createElement("div");
   const isSaved = isInList(movie.imdbID);
+  const isLiked = isMovieLiked(movie.imdbID);
+  const isFavorite = isMovieFavorite(movie.imdbID);
   card.className = `movie-card ${isSaved ? "saved" : ""}`;
   card.dataset.id = movie.imdbID;
 
@@ -12,12 +51,8 @@ function createMovieCard(movie, options = {}) {
     ? `<img class="card-poster" src="${movie.Poster}" alt="${escape(movie.Title)}" loading="lazy">`
     : `<div class="card-poster" style="background:#ddd7cc; display:flex; align-items:center; justify-content:center;">No Poster</div>`;
 
-  const detailsButton = showDetails
-    ? '<button class="btn-sm btn-details" type="button">Details</button>'
-    : "";
-
   const detailsPanel = showDetails
-    ? '<div class="movie-details" aria-live="polite"></div>'
+    ? '<div class="movie-details open" aria-live="polite">Loading details...</div>'
     : "";
 
   card.innerHTML = `
@@ -34,19 +69,26 @@ function createMovieCard(movie, options = {}) {
       <div class="card-year">${escape(movie.Year || "?")}</div>
       <div class="card-actions">
         <button class="btn-sm btn-card-save" type="button">${isSaved ? "✓ Saved" : "+ Watchlist"}</button>
-        ${detailsButton}
+        <button class="btn-sm btn-like ${isLiked ? "active" : ""}" type="button" aria-pressed="${isLiked}">${isLiked ? "Liked" : "Like"}</button>
+        <button class="btn-sm btn-favorite ${isFavorite ? "active" : ""}" type="button" aria-pressed="${isFavorite}">${isFavorite ? "Favorited" : "Favorite"}</button>
       </div>
       ${detailsPanel}
     </div>
   `;
 
   const saveBtn = card.querySelector(".btn-card-save");
+  const likeBtn = card.querySelector(".btn-like");
+  const favoriteBtn = card.querySelector(".btn-favorite");
   const bookmarkBtn = card.querySelector(".card-bookmark-btn");
-  const detailsBtn = card.querySelector(".btn-details");
 
   saveBtn?.addEventListener("click", () => toggleMovieWatchlist(movie, card));
+  likeBtn?.addEventListener("click", () => toggleLike(movie, likeBtn));
+  favoriteBtn?.addEventListener("click", () => toggleFavorite(movie, favoriteBtn));
   bookmarkBtn?.addEventListener("click", () => toggleMovieWatchlist(movie, card));
-  detailsBtn?.addEventListener("click", () => toggleMovieDetails(movie, card, detailsBtn));
+
+  if (showDetails) {
+    loadMovieDetails(movie, card);
+  }
 
   return card;
 }
@@ -71,18 +113,9 @@ function toggleMovieWatchlist(movie, cardElement) {
   updateCount();
 }
 
-async function toggleMovieDetails(movie, cardElement, detailsBtn) {
+async function loadMovieDetails(movie, cardElement) {
   const panel = cardElement.querySelector(".movie-details");
-  if (!panel || !detailsBtn) return;
-
-  if (panel.classList.contains("open")) {
-    panel.classList.remove("open");
-    detailsBtn.innerText = "Details";
-    return;
-  }
-
-  panel.classList.add("open");
-  detailsBtn.innerText = "Hide Details";
+  if (!panel) return;
 
   if (panel.dataset.loaded === "true") return;
 
@@ -107,4 +140,20 @@ async function toggleMovieDetails(movie, cardElement, detailsBtn) {
     console.error("Failed to load details:", error);
     panel.innerHTML = "Could not load details right now.";
   }
+}
+
+function toggleLike(movie, buttonElement) {
+  const liked = toggleMovieReaction(MOVIE_LIKES_STORAGE_KEY, movie.imdbID);
+  buttonElement.classList.toggle("active", liked);
+  buttonElement.setAttribute("aria-pressed", liked ? "true" : "false");
+  buttonElement.innerText = liked ? "Liked" : "Like";
+  showMsg(liked ? `Liked: ${movie.Title}` : `Unliked: ${movie.Title}`);
+}
+
+function toggleFavorite(movie, buttonElement) {
+  const favorited = toggleMovieReaction(MOVIE_FAVORITES_STORAGE_KEY, movie.imdbID);
+  buttonElement.classList.toggle("active", favorited);
+  buttonElement.setAttribute("aria-pressed", favorited ? "true" : "false");
+  buttonElement.innerText = favorited ? "Favorited" : "Favorite";
+  showMsg(favorited ? `Favorited: ${movie.Title}` : `Removed favorite: ${movie.Title}`);
 }

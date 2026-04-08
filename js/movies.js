@@ -1,164 +1,164 @@
 const API_KEY = "373c7a1f";
 const API_URL = "https://www.omdbapi.com/";
 
-let currentMoviesList = [];
-let currentMoviesSearch = "";
-let currentVisibleMovies = [];
+let searchedMovies = [];
+let currentSearchText = "";
+let visibleMovies = [];
 
-const moviesSearchInput = document.getElementById("moviesSearchInput");
-const moviesSearchBtn = document.getElementById("moviesSearchBtn");
-const moviesSurpriseBtn = document.getElementById("moviesSurpriseBtn");
-const moviesSurpriseResult = document.getElementById("moviesSurpriseResult");
-const moviesClearBtn = document.getElementById("moviesClearBtn");
-const errorBox = document.getElementById("errorBox");
-const resultsBar = document.getElementById("moviesResultsBar");
-const moviesCount = document.getElementById("moviesCount");
-const moviesFilterSelect = document.getElementById("moviesFilterSelect");
-const moviesSortSelect = document.getElementById("moviesSortSelect");
-const moviesGridContainer = document.getElementById("moviesGridContainer");
-const moviesNoResults = document.getElementById("moviesNoResults");
-const loader = document.getElementById("loader");
+const searchInputElement = document.getElementById("moviesSearchInput");
+const searchButtonElement = document.getElementById("moviesSearchBtn");
+const surpriseButtonElement = document.getElementById("moviesSurpriseBtn");
+const surpriseResultElement = document.getElementById("moviesSurpriseResult");
+const clearButtonElement = document.getElementById("moviesClearBtn");
+const errorBoxElement = document.getElementById("errorBox");
+const resultsBarElement = document.getElementById("moviesResultsBar");
+const resultsCountElement = document.getElementById("moviesCount");
+const filterSelectElement = document.getElementById("moviesFilterSelect");
+const sortSelectElement = document.getElementById("moviesSortSelect");
+const moviesGridElement = document.getElementById("moviesGridContainer");
+const noResultsElement = document.getElementById("moviesNoResults");
+const loadingIndicatorElement = document.getElementById("loader");
 
-function filterByYear(movie) {
-  const year = parseInt(movie.Year, 10);
-  const filterValue = moviesFilterSelect?.value || "all";
+function matchesYearFilter(movie) {
+  const movieYear = parseInt(movie.Year, 10);
+  const selectedFilterValue = filterSelectElement?.value || "all";
 
-  if (filterValue === "pre1990") return year < 1990;
-  if (filterValue === "1990-2009") return year >= 1990 && year <= 2009;
-  if (filterValue === "2010-plus") return year >= 2010;
+  if (selectedFilterValue === "pre1990") return movieYear < 1990;
+  if (selectedFilterValue === "1990-2009") return movieYear >= 1990 && movieYear <= 2009;
+  if (selectedFilterValue === "2010-plus") return movieYear >= 2010;
   return true;
 }
 
-function sortMovies(list) {
-  const sorted = [...list];
-  const sortValue = moviesSortSelect?.value || "default";
+function sortMovieResults(movieList) {
+  const sortedMovies = [...movieList];
+  const selectedSortValue = sortSelectElement?.value || "default";
 
-  if (sortValue === "year-desc") {
-    sorted.sort((a, b) => parseInt(b.Year, 10) - parseInt(a.Year, 10));
-  } else if (sortValue === "year-asc") {
-    sorted.sort((a, b) => parseInt(a.Year, 10) - parseInt(b.Year, 10));
-  } else if (sortValue === "az") {
-    sorted.sort((a, b) => a.Title.localeCompare(b.Title));
-  } else if (sortValue === "za") {
-    sorted.sort((a, b) => b.Title.localeCompare(a.Title));
+  if (selectedSortValue === "year-desc") {
+    sortedMovies.sort((a, b) => parseInt(b.Year, 10) - parseInt(a.Year, 10));
+  } else if (selectedSortValue === "year-asc") {
+    sortedMovies.sort((a, b) => parseInt(a.Year, 10) - parseInt(b.Year, 10));
+  } else if (selectedSortValue === "az") {
+    sortedMovies.sort((a, b) => a.Title.localeCompare(b.Title));
+  } else if (selectedSortValue === "za") {
+    sortedMovies.sort((a, b) => b.Title.localeCompare(a.Title));
   }
 
-  return sorted;
+  return sortedMovies;
 }
 
 function getVisibleMovies() {
-  return sortMovies(currentMoviesList.filter(filterByYear));
+  return sortMovieResults(searchedMovies.filter(matchesYearFilter));
 }
 
 function showError(message) {
-  if (!errorBox) return;
-  errorBox.classList.remove("hidden");
-  errorBox.innerHTML = `<span>${message}</span>`;
-  setTimeout(() => errorBox.classList.add("hidden"), 3000);
+  if (!errorBoxElement) return;
+  errorBoxElement.classList.remove("hidden");
+  errorBoxElement.innerHTML = `<span>${message}</span>`;
+  setTimeout(() => errorBoxElement.classList.add("hidden"), 3000);
 }
 
 function renderMoviesList() {
-  currentVisibleMovies = getVisibleMovies();
+  visibleMovies = getVisibleMovies();
 
-  if (!currentVisibleMovies.length) {
-    moviesGridContainer.innerHTML = "";
-    moviesNoResults?.classList.remove("hidden");
-    resultsBar?.classList.add("hidden");
+  if (!visibleMovies.length) {
+    moviesGridElement.innerHTML = "";
+    noResultsElement?.classList.remove("hidden");
+    resultsBarElement?.classList.add("hidden");
     return;
   }
 
-  moviesNoResults?.classList.add("hidden");
-  resultsBar?.classList.remove("hidden");
-  if (moviesCount) {
-    moviesCount.innerText = `${currentVisibleMovies.length} results${currentMoviesSearch ? ` for "${currentMoviesSearch}"` : ""}`;
+  noResultsElement?.classList.add("hidden");
+  resultsBarElement?.classList.remove("hidden");
+  if (resultsCountElement) {
+    resultsCountElement.innerText = `${visibleMovies.length} results${currentSearchText ? ` for "${currentSearchText}"` : ""}`;
   }
 
-  moviesGridContainer.innerHTML = "";
-  currentVisibleMovies.forEach((movie) => {
-    moviesGridContainer.appendChild(createMovieCard(movie));
+  moviesGridElement.innerHTML = "";
+  visibleMovies.forEach((movie) => {
+    moviesGridElement.appendChild(createMovieCard(movie));
   });
 }
 
-async function searchMovies(query) {
-  currentMoviesSearch = query;
-  loader?.classList.remove("hidden");
-  errorBox?.classList.add("hidden");
-  resultsBar?.classList.add("hidden");
-  moviesNoResults?.classList.add("hidden");
+async function searchMovies(searchText) {
+  currentSearchText = searchText;
+  loadingIndicatorElement?.classList.remove("hidden");
+  errorBoxElement?.classList.add("hidden");
+  resultsBarElement?.classList.add("hidden");
+  noResultsElement?.classList.add("hidden");
 
   try {
-    const response = await fetch(`${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&type=movie`);
-    const data = await response.json();
+    const response = await fetch(`${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(searchText)}&type=movie`);
+    const responseData = await response.json();
 
-    if (data.Response === "True" && data.Search) {
-      currentMoviesList = data.Search;
+    if (responseData.Response === "True" && responseData.Search) {
+      searchedMovies = responseData.Search;
       renderMoviesList();
     } else {
-      currentMoviesList = [];
-      moviesGridContainer.innerHTML = "";
-      moviesNoResults?.classList.remove("hidden");
-      resultsBar?.classList.add("hidden");
+      searchedMovies = [];
+      moviesGridElement.innerHTML = "";
+      noResultsElement?.classList.remove("hidden");
+      resultsBarElement?.classList.add("hidden");
     }
   } catch (error) {
     console.error(error);
     showError("Network error");
   } finally {
-    loader?.classList.add("hidden");
+    loadingIndicatorElement?.classList.add("hidden");
   }
 }
 
-function resetMovies() {
-  if (moviesSearchInput) moviesSearchInput.value = "";
-  if (moviesFilterSelect) moviesFilterSelect.value = "all";
-  if (moviesSortSelect) moviesSortSelect.value = "default";
-  moviesClearBtn?.classList.add("hidden");
-  moviesNoResults?.classList.add("hidden");
-  resultsBar?.classList.add("hidden");
-  if (moviesGridContainer) moviesGridContainer.innerHTML = "";
-  moviesSurpriseResult?.classList.add("hidden");
-  if (moviesSurpriseResult) moviesSurpriseResult.innerHTML = "";
-  currentMoviesList = [];
-  currentVisibleMovies = [];
-  currentMoviesSearch = "";
+function resetMoviesPage() {
+  if (searchInputElement) searchInputElement.value = "";
+  if (filterSelectElement) filterSelectElement.value = "all";
+  if (sortSelectElement) sortSelectElement.value = "default";
+  clearButtonElement?.classList.add("hidden");
+  noResultsElement?.classList.add("hidden");
+  resultsBarElement?.classList.add("hidden");
+  if (moviesGridElement) moviesGridElement.innerHTML = "";
+  surpriseResultElement?.classList.add("hidden");
+  if (surpriseResultElement) surpriseResultElement.innerHTML = "";
+  searchedMovies = [];
+  visibleMovies = [];
+  currentSearchText = "";
 }
 
-function handleSearch() {
-  const query = moviesSearchInput?.value.trim() || "";
-  if (query.length < 2) {
-    resetMovies();
+function handleSearchClick() {
+  const searchText = searchInputElement?.value.trim() || "";
+  if (searchText.length < 2) {
+    resetMoviesPage();
     return;
   }
-  searchMovies(query);
+  searchMovies(searchText);
 }
 
-function handleSurpriseMe() {
-  const list = currentMoviesList.length > 0 ? currentMoviesList : currentVisibleMovies;
+function handleSurpriseClick() {
+  const candidateMovies = searchedMovies.length > 0 ? searchedMovies : visibleMovies;
 
-  if (!list.length) {
-    if (moviesSurpriseResult) {
-      moviesSurpriseResult.innerHTML = "No movies to pick yet.";
-      moviesSurpriseResult.classList.remove("hidden");
+  if (!candidateMovies.length) {
+    if (surpriseResultElement) {
+      surpriseResultElement.innerHTML = "No movies to pick yet.";
+      surpriseResultElement.classList.remove("hidden");
     }
     return;
   }
 
-  const randomMovie = list[Math.floor(Math.random() * list.length)];
-  if (moviesSurpriseResult) {
-    moviesSurpriseResult.innerHTML = `Try watching: <strong>${escape(randomMovie.Title)}</strong> (${escape(randomMovie.Year || "N/A")})`;
-    moviesSurpriseResult.classList.remove("hidden");
+  const randomMovie = candidateMovies[Math.floor(Math.random() * candidateMovies.length)];
+  if (surpriseResultElement) {
+    surpriseResultElement.innerHTML = `Try watching: <strong>${escape(randomMovie.Title)}</strong> (${escape(randomMovie.Year || "N/A")})`;
+    surpriseResultElement.classList.remove("hidden");
   }
 }
 
-moviesSearchBtn?.addEventListener("click", handleSearch);
-moviesSurpriseBtn?.addEventListener("click", handleSurpriseMe);
-moviesClearBtn?.addEventListener("click", resetMovies);
-moviesFilterSelect?.addEventListener("change", renderMoviesList);
-moviesSortSelect?.addEventListener("change", renderMoviesList);
+searchButtonElement?.addEventListener("click", handleSearchClick);
+surpriseButtonElement?.addEventListener("click", handleSurpriseClick);
+clearButtonElement?.addEventListener("click", resetMoviesPage);
+filterSelectElement?.addEventListener("change", renderMoviesList);
+sortSelectElement?.addEventListener("change", renderMoviesList);
 
-moviesSearchInput?.addEventListener("input", () => {
-  if (moviesSearchInput.value.trim()) {
-    moviesClearBtn?.classList.remove("hidden");
+searchInputElement?.addEventListener("input", () => {
+  if (searchInputElement.value.trim()) {
+    clearButtonElement?.classList.remove("hidden");
   } else {
-    moviesClearBtn?.classList.add("hidden");
+    clearButtonElement?.classList.add("hidden");
   }
 });

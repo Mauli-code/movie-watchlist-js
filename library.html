@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Movie App - Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/watchlist.css">
+</head>
+<body>
+
+<nav id="navbar">
+    <div class="nav-brand">
+        <h1>Movie App</h1>
+    </div>
+    <div class="nav-links-group">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="movies.html" class="nav-link">Movies</a>
+        <a href="library.html" class="nav-link active">Library <span id="navWlCount">0</span></a>
+        <button id="themeToggle" class="theme-toggle">Light</button>
+    </div>
+</nav>
+
+<main id="appRoot">
+    <div id="watchlistPage" class="page">
+        <h2>My Library</h2>
+        <div id="errorBox" class="error-message hidden"></div>
+        <div id="wlEmptyState" class="wl-empty">
+            <p>Your library is empty. Add some movies!</p>
+        </div>
+        <div id="wlGrid" class="movies-grid"></div>
+        <div id="wlActions" class="hidden" style="text-align:center; margin-top:2rem;">
+            <p>Total: <strong id="wlCount">0</strong></p>
+            <button id="randomBtn">Random Pick</button>
+            <button id="clearAllBtn">Clear All</button>
+        </div>
+
+        <section class="library-boxes-wrap">
+            <div class="library-box">
+                <h3>Liked Movies</h3>
+                <div id="likedMoviesList" class="mini-grid"></div>
+                <p id="likedEmpty" class="small-empty hidden">No liked movies yet.</p>
+            </div>
+            <div class="library-box">
+                <h3>Favorite Movies</h3>
+                <div id="favoriteMoviesList" class="mini-grid"></div>
+                <p id="favoriteEmpty" class="small-empty hidden">No favorite movies yet.</p>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/common.js"></script>
+<script src="js/watchlist.js"></script>
+</body>
+</html>
