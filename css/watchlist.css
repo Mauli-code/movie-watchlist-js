@@ -210,13 +210,13 @@ body.dark-mode .mini-remove-btn:hover {
 
 .card-poster-wrap {
   position: relative;
-  width: 88px;
-  min-width: 88px;
+  width: 104px;
+  min-width: 104px;
 }
 
 .card-poster {
-  width: 88px;
-  height: 124px;
+  width: 104px;
+  height: 146px;
   object-fit: cover;
   border: 1px solid #c1b9ad;
   border-radius: 4px;
@@ -409,13 +409,13 @@ body.dark-mode .mini-remove-btn:hover {
   }
 
   .card-poster-wrap {
-    width: 78px;
-    min-width: 78px;
+    width: 92px;
+    min-width: 92px;
   }
 
   .card-poster {
-    width: 78px;
-    height: 112px;
+    width: 92px;
+    height: 132px;
   }
 }
 
@@ -436,7 +436,7 @@ body.dark-mode .mini-remove-btn:hover {
   .card-poster-wrap,
   .card-poster {
     width: 100%;
-    max-width: 170px;
+    max-width: 210px;
     height: auto;
   }
 
